@@ -37,5 +37,5 @@ jobs:
           port: "22"
           script: |
             ls -lha
-            cd /home/${{ github.REPOSITORY }}
+            cd /home/${{ github.REPOSITORY }} && yarn install
             ls -lha
