@@ -34,7 +34,7 @@ jobs:
       - name: Run build task
         run: yarn build
 
-      - name: Deploy to Server Contabo
+      - name: Deploy to Server
         uses: easingthemes/ssh-deploy@main
         env:
             SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
