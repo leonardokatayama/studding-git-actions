@@ -43,8 +43,16 @@ jobs:
             REMOTE_USER: ${{ secrets.REMOTE_USER }}
             TARGET: ${{ secrets.REMOTE_TARGET }}
             EXCLUDE: "/dist/, /node_modules/"
-            SCRIPT_AFTER: |
-              echo $RSYNC_STDOUT
-              cd /home/git-actions
-              yarn install
-              pm2 start src/server.js --name git-actions
+
+      - name: Start application
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: "22"
+          script: |
+            whoami
+            cd /home/git-actions
+            yarn install
+            pm2 start src/server.js --name git-actions
