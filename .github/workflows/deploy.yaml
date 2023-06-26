@@ -46,6 +46,3 @@ jobs:
             SCRIPT_AFTER: |
               whoami
               cd $RSYNC_STDOUT
-              ls -al
-              yarn install
-              pm2 start src/server.js
