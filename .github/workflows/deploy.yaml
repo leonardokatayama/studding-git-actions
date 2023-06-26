@@ -25,8 +25,17 @@ jobs:
       - name: Run build task
         run: yarn build
 
-      - name: GITHUB_REPOSITORY
-        run: echo $GITHUB_REPOSITORY
+      - name: Create project repository
+        run: mkdir /home/$GITHUB_REPOSITORY
 
-      - name: Workdir
-        run: echo $GITHUB_WORKSPACE
+      - name: Copy project files
+        run: cp $GITHUB_WORKSPACE/dist /home/$GITHUB_REPOSITORY
+
+      - name: Change directory to project repository
+        run: cd /home/$GITHUB_REPOSITORY
+
+      - name: Install yarn dependencies
+        run: yarn install
+
+      - name: Run project
+        run: pm2 start /home/$GITHUB_REPOSITORY/src/server.js --name $GITHUB_REPOSITORY
