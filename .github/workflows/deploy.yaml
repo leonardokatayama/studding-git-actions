@@ -45,14 +45,13 @@ jobs:
             EXCLUDE: "/dist/, /node_modules/"
 
       - name: Start application
-        uses: appleboy/ssh-action@v0.1.10
+        uses: garygrossgarten/github-action-ssh@release
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: "22"
-          script: |
-            whoami
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: |
             cd /home/git-actions
+            ls -lha
             yarn install
             pm2 start src/server.js --name git-actions
