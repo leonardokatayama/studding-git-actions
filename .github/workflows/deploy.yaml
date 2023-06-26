@@ -45,7 +45,7 @@ jobs:
             EXCLUDE: "/dist/, /node_modules/"
             SCRIPT_AFTER: |
               whoami
+              cd $RSYNC_STDOUT
               ls -al
-              echo $RSYNC_STDOUT
               yarn install
-              pm2 restart all
+              pm2 start src/server.js
