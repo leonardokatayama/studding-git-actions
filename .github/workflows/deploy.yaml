@@ -2,7 +2,7 @@ name: deploy-wapis-workflow
 on: [push]
 jobs:
   deploy-to-server:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
@@ -16,38 +16,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.19.1
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v3
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          cache: "yarn"
 
       - name: Install yarn dependencies
         run: yarn install
 
       - name: Run build task
         run: yarn build
-
-      - name: Deploy to Server Contabo
-        uses: easingthemes/ssh-deploy@main
-        env:
-            SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-            SOURCE: "dist/"
-            REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-            REMOTE_USER: ${{ secrets.REMOTE_USER }}
-            TARGET: ${{ secrets.REMOTE_TARGET }}
-            EXCLUDE: "/dist/, /node_modules/"
-
-      - name: Start application
-        uses: garygrossgarten/github-action-ssh@release
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
-          command: export PATH="$PATH:/home/***/.nvm/versions/node/v18.16.1/bin/pm2:/home/***/.nvm/versions/node/v18.16.1/bin/pm2" && cd /home/git-actions && ls -lha && yarn install && pm2 restart git-actions
