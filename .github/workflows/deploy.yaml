@@ -20,10 +20,11 @@ jobs:
         run: yarn build
 
       - name: Make env file
-        run: echo 'DATABASE_URL="postgres://prisma:prisma@127.0.0.1:15432/tests"' > $GITHUB_WORKSPACE/dist/.env.test
-      - run: echo 'PORT="3333"' >> $GITHUB_WORKSPACE/dist/.env.test
-      - run: echo 'SECRET="bWluaGFGUkFTRXNlY3JldGHDiWVzc2E="' >> $GITHUB_WORKSPACE/dist/.env.test
-      - run: echo 'TEST="${{ secrets.REMOTE_HOST }}"' >> $GITHUB_WORKSPACE/dist/.env.test
+        run: |
+          echo 'DATABASE_URL="postgres://prisma:prisma@127.0.0.1:15432/tests"' > $GITHUB_WORKSPACE/dist/.env.test
+          echo 'PORT="3333"' >> $GITHUB_WORKSPACE/dist/.env.test
+          echo 'SECRET="bWluaGFGUkFTRXNlY3JldGHDiWVzc2E="' >> $GITHUB_WORKSPACE/dist/.env.test
+          echo 'TEST="${{ secrets.REMOTE_HOST }}"' >> $GITHUB_WORKSPACE/dist/.env.test
 
       - name: Install yarn dependencies
         run: yarn --cwd $GITHUB_WORKSPACE/dist install
@@ -37,6 +38,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: "/home/${{ github.REPOSITORY }}"
+          EXCLUDE: "/node_modules/"
           SCRIPT_AFTER: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
@@ -44,19 +46,3 @@ jobs:
             rm -rf node_modules
             yarn install
             pm2 restart ${{ github.REPOSITORY }}
-
-      # - name: SSH Remote Commands
-      #   uses: appleboy/ssh-action@v0.1.10
-      #   with:
-      #     host: ${{ secrets.REMOTE_HOST }}
-      #     username: ${{ secrets.REMOTE_USER }}
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     port: "22"
-      #     script: |
-      #       export NVM_DIR=~/.nvm
-      #       source ~/.nvm/nvm.sh
-      #       npm --help
-      #       yarn --help
-      #       cd /home/${{ github.REPOSITORY }}
-      #       yarn install
-      #       ls -lha
