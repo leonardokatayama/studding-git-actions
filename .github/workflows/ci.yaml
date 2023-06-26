@@ -1,4 +1,4 @@
-name: deploy-wapis-workflow
+name: tests-wapis-workflow
 on:
   pull_request:
     types:
