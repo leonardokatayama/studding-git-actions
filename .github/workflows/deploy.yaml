@@ -31,18 +31,19 @@ jobs:
       - name: Deploy to Server Contabo
         uses: easingthemes/ssh-deploy@main
         env:
-            SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-            SOURCE: "dist/"
-            REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-            REMOTE_USER: ${{ secrets.REMOTE_USER }}
-            TARGET: "/home/${{ github.REPOSITORY }}"
-            EXCLUDE: "/src/, /node_modules/"
-            SCRIPT_AFTER: |
-              export NVM_DIR=~/.nvm
-              source ~/.nvm/nvm.sh
-              cd /home/${{ github.REPOSITORY }}
-              yarn install
-              pm2 restart ${{ github.REPOSITORY }}
+          ARGS: "-rlgoDzvc -i --delete"
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: "/home/${{ github.REPOSITORY }}"
+          EXCLUDE: "/src/, /node_modules/"
+          SCRIPT_AFTER: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            cd /home/${{ github.REPOSITORY }}
+            yarn install
+            pm2 restart ${{ github.REPOSITORY }}
 
       # - name: SSH Remote Commands
       #   uses: appleboy/ssh-action@v0.1.10
