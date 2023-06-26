@@ -26,7 +26,7 @@ jobs:
         run: yarn build
 
       - name: Create project repository
-        run: mkdir /home/$GITHUB_REPOSITORY
+        run: mkdir /home/$GITHUB_REPOSITORY -p
 
       - name: Copy project files
         run: cp $GITHUB_WORKSPACE/dist /home/$GITHUB_REPOSITORY
