@@ -2,7 +2,7 @@ name: deploy-wapis-workflow
 on: [push]
 jobs:
   deploy-to-server:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
@@ -25,17 +25,8 @@ jobs:
       - name: Run build task
         run: yarn build
 
-      - name: Create project repository
-        run: mkdir /home/$GITHUB_REPOSITORY -p
-
-      - name: Copy project files
-        run: cp -R $GITHUB_WORKSPACE/dist/* /home/$GITHUB_REPOSITORY
-
-      - name: Change directory to project repository
-        run: cd /home/$GITHUB_REPOSITORY
-
-      - name: Install yarn dependencies
-        run: yarn --cwd /home/$GITHUB_REPOSITORY install
-
-      - name: Run project
-        run: pm2 restart $GITHUB_REPOSITORY
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: $GITHUB_WORKSPACE/dist/*

@@ -1,0 +1,49 @@
+name: deploy-wapis-workflow
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - backup
+jobs:
+  deploy-to-server:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+
+      - name: Make env file
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_DATABASE_URL: "postgres://prisma:prisma@127.0.0.1:15432/tests"
+          file_name: .env.test
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.16.1
+          cache: "yarn"
+
+      - name: Install yarn dependencies
+        run: yarn install
+
+      - name: Run build task
+        run: yarn build
+
+      - name: Create project repository
+        run: mkdir /home/$GITHUB_REPOSITORY -p
+
+      - name: Remove old project files
+        run: rm -rf /home/$GITHUB_REPOSITORY/src /home/$GITHUB_REPOSITORY/node_modules/
+
+      - name: Copy project files
+        run: cp -R $GITHUB_WORKSPACE/dist/* /home/$GITHUB_REPOSITORY
+
+      - name: Change directory to project repository
+        run: cd /home/$GITHUB_REPOSITORY
+
+      - name: Install yarn dependencies
+        run: yarn --cwd /home/$GITHUB_REPOSITORY install
+
+      - name: Run project
+        run: pm2 restart $GITHUB_REPOSITORY
