@@ -36,6 +36,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: "22"
           script: |
-            exec bash
-            cd /home/${{ github.REPOSITORY }} && yarn install
+            exec bash \-l
+            cd /home/${{ github.REPOSITORY }}
+            yarn install
             ls -lha
