@@ -9,9 +9,9 @@ jobs:
 
       - name: Make env file
         run: echo 'DATABASE_URL="postgres://prisma:prisma@127.0.0.1:15432/tests"' > ".env.test"
-        run: echo 'PORT="3333"' > ".env.test"
-        run: echo 'SECRET="bWluaGFGUkFTRXNlY3JldGHDiWVzc2E="' > ".env.test"
-        run: echo 'TEST="${{ secrets.REMOTE_HOST }}' > ".env.test"
+      - run: echo 'PORT="3333"' > ".env.test"
+      - run: echo 'SECRET="bWluaGFGUkFTRXNlY3JldGHDiWVzc2E="' > ".env.test"
+      - run: echo 'TEST="${{ secrets.REMOTE_HOST }}' > ".env.test"
 
       - name: Setup node
         uses: actions/setup-node@v3
