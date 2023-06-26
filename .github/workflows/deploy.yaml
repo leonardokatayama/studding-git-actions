@@ -4,7 +4,8 @@ jobs:
   deploy-to-server:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout project
+        uses: actions/checkout@v3
 
       - name: Make env file
         uses: SpicyPizza/create-envfile@v2.0
@@ -23,6 +24,9 @@ jobs:
 
       - name: Run build task
         run: yarn build
+
+      - name: GITHUB_REPOSITORY
+        run: echo $GITHUB_REPOSITORY
 
       - name: Workdir
         run: echo $GITHUB_WORKSPACE
