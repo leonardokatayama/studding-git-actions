@@ -35,7 +35,7 @@ jobs:
         run: cd /home/$GITHUB_REPOSITORY
 
       - name: Install yarn dependencies
-        run: yarn install
+        run: yarn --cwd /home/$GITHUB_REPOSITORY install
 
       - name: Run project
-        run: pm2 start /home/$GITHUB_REPOSITORY/src/server.js --name $GITHUB_REPOSITORY
+        run: pm2 restart $GITHUB_REPOSITORY
