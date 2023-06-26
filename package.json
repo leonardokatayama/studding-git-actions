@@ -13,7 +13,7 @@
     "dev": "tsx watch src/server.ts",
     "test": "jest",
     "copyfiles:build:package": "copyfiles package.json yarn.lock dist",
-    "package:prod": "cd dist && npm pkg set 'scripts'='a' && npm pkg delete 'scripts.0' && npm pkg delete 'devDependencies' && npm pkg set 'scripts.postinstall'='yarn prisma:generate && yarn prisma:deploy' && npm pkg set 'scripts.prisma:generate'='prisma generate' && npm pkg set 'scripts.prisma:deploy'='prisma migrate deploy' && npm pkg set 'dependencies.prisma'='^4.16.1'"
+    "package:prod": "cd dist && npm pkg set 'scripts'='a' && npm pkg delete 'scripts.0' && npm pkg delete 'devDependencies'"
   },
   "devDependencies": {
     "@swc/core": "^1.3.66",
