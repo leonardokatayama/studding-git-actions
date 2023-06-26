@@ -1,0 +1,2 @@
+[![tests-wapis-workflow](https://github.com/leonardokatayama/studding-git-actions/actions/workflows/ci.yaml/badge.svg)](https://github.com/leonardokatayama/studding-git-actions/actions/workflows/ci.yaml)
+[![deploy-wapis-workflow](https://github.com/leonardokatayama/studding-git-actions/actions/workflows/deploy.yaml/badge.svg)](https://github.com/leonardokatayama/studding-git-actions/actions/workflows/deploy.yaml)

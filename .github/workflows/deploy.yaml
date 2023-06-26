@@ -23,13 +23,19 @@ jobs:
         run: echo 'DATABASE_URL="postgres://prisma:prisma@127.0.0.1:15432/tests"' > $GITHUB_WORKSPACE/dist/.env.test
       - run: echo 'PORT="3333"' >> $GITHUB_WORKSPACE/dist/.env.test
       - run: echo 'SECRET="bWluaGFGUkFTRXNlY3JldGHDiWVzc2E="' >> $GITHUB_WORKSPACE/dist/.env.test
-      - run: echo 'TEST="${{ secrets.REMOTE_HOST }}' >> $GITHUB_WORKSPACE/dist/.env.test
+      - run: echo 'TEST="${{ secrets.REMOTE_HOST }}'" >> $GITHUB_WORKSPACE/dist/.env.test
 
       - name: Install yarn dependencies
         run: yarn --cwd $GITHUB_WORKSPACE/dist install
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v0.1.10
         with:
-          name: my-artifact
-          path: ${{ github.workspace }}/dist/*
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: "22"
+          script: |
+            ls -lha
+            cd /home/$GITHUB_REPOSITORY
+            ls -lha
