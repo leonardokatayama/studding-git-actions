@@ -29,7 +29,7 @@ jobs:
         run: mkdir /home/$GITHUB_REPOSITORY -p
 
       - name: Copy project files
-        run: cp $GITHUB_WORKSPACE/dist /home/$GITHUB_REPOSITORY
+        run: cp -R $GITHUB_WORKSPACE/dist/* /home/$GITHUB_REPOSITORY
 
       - name: Change directory to project repository
         run: cd /home/$GITHUB_REPOSITORY
