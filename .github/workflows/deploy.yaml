@@ -37,5 +37,5 @@ jobs:
           port: "22"
           script: |
             ls -lha
-            cd /home/$GITHUB_REPOSITORY
+            cd /home/${{ github.REPOSITORY }}
             ls -lha
