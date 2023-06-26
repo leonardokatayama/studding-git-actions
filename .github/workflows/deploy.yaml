@@ -8,10 +8,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Make env file
-        uses: SpicyPizza/create-envfile@v2.0
-        with:
-          envkey_DATABASE_URL: "postgres://prisma:prisma@127.0.0.1:15432/tests"
-          file_name: .env.test
+        run: echo 'DATABASE_URL="postgres://prisma:prisma@127.0.0.1:15432/tests"' > ".env.test"
+        run: echo 'PORT="3333"' > ".env.test"
+        run: echo 'SECRET="bWluaGFGUkFTRXNlY3JldGHDiWVzc2E="' > ".env.test"
+        run: echo 'TEST="${{ secrets.REMOTE_HOST }}' > ".env.test"
 
       - name: Setup node
         uses: actions/setup-node@v3
