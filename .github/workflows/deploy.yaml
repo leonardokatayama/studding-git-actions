@@ -35,16 +35,14 @@ jobs:
             SOURCE: "dist/"
             REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
             REMOTE_USER: ${{ secrets.REMOTE_USER }}
-            TARGET: ${{ secrets.REMOTE_TARGET }}
+            TARGET: "/home/${{ github.REPOSITORY }}"
             EXCLUDE: "/dist/, /node_modules/"
             SCRIPT_AFTER: |
               export NVM_DIR=~/.nvm
               source ~/.nvm/nvm.sh
-              npm --help
-              yarn --help
               cd /home/${{ github.REPOSITORY }}
               yarn install
-              ls -lha
+              pm2 restart ${{ github.REPOSITORY }}
 
       # - name: SSH Remote Commands
       #   uses: appleboy/ssh-action@v0.1.10
