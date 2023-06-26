@@ -36,7 +36,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: "22"
           script: |
-            exec bash \-l
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            npm --help
+            yarn --help
             cd /home/${{ github.REPOSITORY }}
             yarn install
             ls -lha
