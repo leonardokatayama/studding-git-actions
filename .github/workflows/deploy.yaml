@@ -20,10 +20,13 @@ jobs:
         run: yarn build
 
       - name: Make env file
-        run: echo 'DATABASE_URL="postgres://prisma:prisma@127.0.0.1:15432/tests"' > "${{ github.workspace }}.env.test"
-      - run: echo 'PORT="3333"' >> "${{ github.workspace }}.env.test"
-      - run: echo 'SECRET="bWluaGFGUkFTRXNlY3JldGHDiWVzc2E="' >> "${{ github.workspace }}.env.test"
-      - run: echo 'TEST="${{ secrets.REMOTE_HOST }}' >> "${{ github.workspace }}.env.test"
+        run: echo 'DATABASE_URL="postgres://prisma:prisma@127.0.0.1:15432/tests"' > $GITHUB_WORKSPACE/dist/.env.test
+      - run: echo 'PORT="3333"' >> $GITHUB_WORKSPACE/dist/.env.test
+      - run: echo 'SECRET="bWluaGFGUkFTRXNlY3JldGHDiWVzc2E="' >> $GITHUB_WORKSPACE/dist/.env.test
+      - run: echo 'TEST="${{ secrets.REMOTE_HOST }}' >> $GITHUB_WORKSPACE/dist/.env.test
+
+      - name: Install yarn dependencies
+        run: yarn --cwd $GITHUB_WORKSPACE/dist install
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
