@@ -1,5 +1,10 @@
 name: deploy-wapis-workflow
-on: [push]
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - develop
 jobs:
   deploy-to-server:
     runs-on: ubuntu-latest
@@ -21,13 +26,7 @@ jobs:
 
       - name: Make env file
         run: |
-          echo 'DATABASE_URL="postgres://prisma:prisma@127.0.0.1:15432/tests"' > $GITHUB_WORKSPACE/dist/.env.test
-          echo 'PORT="3333"' >> $GITHUB_WORKSPACE/dist/.env.test
-          echo 'SECRET="bWluaGFGUkFTRXNlY3JldGHDiWVzc2E="' >> $GITHUB_WORKSPACE/dist/.env.test
-          echo 'TEST="${{ secrets.REMOTE_HOST }}"' >> $GITHUB_WORKSPACE/dist/.env.test
-
-      - name: Install yarn dependencies
-        run: yarn --cwd $GITHUB_WORKSPACE/dist install
+          echo 'DATABASE_URL="postgres://prisma:prisma@127.0.0.1:15432/tests"' > $GITHUB_WORKSPACE/dist/.env
 
       - name: Deploy to Server Contabo
         uses: easingthemes/ssh-deploy@main
@@ -39,6 +38,10 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: "/home/${{ github.REPOSITORY }}"
           EXCLUDE: "/node_modules/"
+          SCRIPT_BEFORE: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            mkdir /home/${{ github.REPOSITORY }} -p
           SCRIPT_AFTER: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
