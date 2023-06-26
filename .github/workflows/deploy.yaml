@@ -37,11 +37,11 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: "/home/${{ github.REPOSITORY }}"
-          EXCLUDE: "/node_modules/"
           SCRIPT_AFTER: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             cd /home/${{ github.REPOSITORY }}
+            rm -rf node_modules
             yarn install
             pm2 restart ${{ github.REPOSITORY }}
 
