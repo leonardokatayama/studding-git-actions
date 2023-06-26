@@ -44,5 +44,4 @@ jobs:
             TARGET: ${{ secrets.REMOTE_TARGET }}
             EXCLUDE: "/dist/, /node_modules/"
             SCRIPT_AFTER: |
-              whoami
-              cd $RSYNC_STDOUT
+              echo $RSYNC_STDOUT
